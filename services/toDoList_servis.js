@@ -30,7 +30,32 @@ const services = {
       return error;
     }
   },
-};
+  editTask_servis: async (editTask) => {
+    console.log(editTask);
+    try {
+      if (!editTask.taskdescription || !editTask.prioritylevel) {
+        throw new Error("inputs Are required !");
+      }
+      const result = await DL.editTask_DL(editTask);
+      if (result.rowCount === 0) {
+        throw new Error("Id Not Exist !");
+      }
+      return result;
+    } catch (error) {
+      // console.log(error);
+      return error;
+    }
+  },
+  updateByCheckbox_servis: async (editCheckbox) => {
+    try {
+      console.log(editCheckbox);
+      const result = await DL.updateByCheckbox_DL(editCheckbox);
+      return result;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }, 
+}
 
 module.exports = { services };
-// module.exports = { getAllList_servis, deleteTask_servis, addTask_servis, editTask_servis }

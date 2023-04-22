@@ -2,7 +2,7 @@ const client = require("../dbConfig");
 
 const getAllList_DL = async (req, res) => {
   try {
-    const todoList = await client.query("Select * from todolist");
+    const todoList = await client.query("Select * from todolist order by id");
     // console.log(todoList.rows);
     return todoList.rows;
   } catch (err) {
@@ -31,7 +31,7 @@ const addTask_DL = async (obj) => {
       obj.prioritylevel +
       "')",
   };
-  
+
   try {
     const result = await client.query(query);
     console.log(result);
@@ -41,17 +41,32 @@ const addTask_DL = async (obj) => {
   }
 };
 
-const editTask_DL = (id) => {
+const editTask_DL = async (editTask) => {
   const query = {
-    text:
-      "UPDATE todolist SET taskdescription = " +
-      req.query.taskdescription +
-      ",prioritylevel =" +
-      req.query.prioritylevel +
-      " where id = " +
-      req.query.id,
+    text: "UPDATE todolist SET taskdescription = $1, prioritylevel = $2 WHERE id = $3",
+    values: [editTask.taskdescription, editTask.prioritylevel, editTask.id],
   };
-  client.query(query);
+  try {
+    const response = await client.query(query);
+    return response;
+  } catch (error) {
+    return error;
+  }
 };
 
-module.exports = { getAllList_DL, deleteTask_DL, addTask_DL, editTask_DL };
+const updateByCheckbox_DL = async (editCheckbox) => {
+  console.log(editCheckbox.isdone);
+  const query = {
+    text: "UPDATE todolist SET isdone = $1 WHERE id = $2",
+    values: [editCheckbox.isdone, editCheckbox.id1],
+  };
+  try {
+    console.log(query);
+    const response = await client.query(query);
+    return response;
+  } catch (err) {
+    return res.json(err);
+  }
+};
+
+module.exports = { getAllList_DL, deleteTask_DL, addTask_DL, editTask_DL, updateByCheckbox_DL };
