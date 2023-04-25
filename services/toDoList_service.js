@@ -1,7 +1,7 @@
 const DL = require("../DL/toDoList_DL");
 
 const services = {
-  getAllList_servis: async () => {
+  getAllList_service: async () => {
     try {
       const result = await DL.getAllList_DL();
       return result;
@@ -9,7 +9,7 @@ const services = {
       console.log(error);
     }
   },
-  deleteTask_servis: async (id) => {
+  deleteTask_service: async (id) => {
     try {
       const result = await DL.deleteTask_DL(id);
       return result;
@@ -18,7 +18,7 @@ const services = {
       return error;
     }
   },
-  addTask_servis: async (task) => {
+  addTask_service: async (task) => {
     if (!task.taskdescription || !task.prioritylevel) {
       return "inputs Are required !";
     }
@@ -30,8 +30,7 @@ const services = {
       return error;
     }
   },
-  editTask_servis: async (editTask) => {
-    console.log(editTask);
+  editTask_service: async (editTask) => {
     try {
       if (!editTask.taskdescription || !editTask.prioritylevel) {
         throw new Error("inputs Are required !");
@@ -42,14 +41,33 @@ const services = {
       }
       return result;
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       return error;
     }
   },
-  updateByCheckbox_servis: async (editCheckbox) => {
+  updateByCheckbox_service: async (editCheckbox) => {
     try {
-      console.log(editCheckbox);
       const result = await DL.updateByCheckbox_DL(editCheckbox);
+      return result;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  },
+  orderBy_service: async (ascDesc) => {
+    try {
+      const result = await DL.orderBy_DL(ascDesc);
+      const orderList = result.rows.filter((item) => item.isdone !== true);
+      return orderList;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }, 
+
+  filterBy_service: async (level) => {
+    try {
+      const result = await DL.filterBy_DL(level);
       return result;
     } catch (error) {
       console.log(error);

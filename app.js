@@ -1,8 +1,6 @@
 const cors = require('cors')
 const express = require('express');
 require('dotenv').config();
-
-
 const router = require("./routes/toDoList_rou");
 
 const app = express();
