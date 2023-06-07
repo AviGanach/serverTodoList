@@ -1,5 +1,6 @@
 const DL = require("../DL/toDoList_DL");
 
+
 const services = {
   getAllList_service: async () => {
     try {
@@ -56,8 +57,13 @@ const services = {
   },
   orderBy_service: async (ascDesc) => {
     try {
-      const result = await DL.orderBy_DL(ascDesc);
-      const orderList = result.rows.filter((item) => item.isdone !== true);
+      console.log(ascDesc);
+      const result = await DL.orderBy_DL(ascDesc)
+      console.log(result);
+      // No ORM
+      // const orderList = result.rows.filter((item) => item.isdone !== true);
+      // ORM
+      const orderList = result.filter((item) => item.isdone !== true);
       return orderList;
     } catch (error) {
       console.log(error);

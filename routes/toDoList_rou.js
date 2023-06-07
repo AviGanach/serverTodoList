@@ -22,6 +22,7 @@ router.delete("/deleteTask", async (req, res) => {
 
 router.post("/addTask", async (req, res) => {
   try {
+    console.log(req.body);
     const result = await services.addTask_service(req.body);
     return res.send(result.command);
   } catch (error) {
@@ -48,15 +49,16 @@ router.post("/updateByCheckbox", async (req, res) => {
 });
 
 router.get("/orderBy", async (req, res) => {
-  if(req.query.order == "asc" || req.query.order == "desc") {
-    try {
-      const todoList = await services.orderBy_service(req.query.order);
-      return res.json(todoList);
-    } catch (err) {
-      return res.json(err);
+  try {
+    if (!req.query || (req.query.order != "asc" && req.query.order != "desc")) {
+      throw("Error: query not valid")
     }
-   };
-   return res.json("Error: query not valid")
+    console.log(req.query.order);
+    const todoList = await services.orderBy_service(req.query.order);
+    return res.status(200).send(todoList);
+  } catch (err) {
+    return res.status(400).send(err);
+  }
 });
 
 router.get("/filterBy", async (req, res) => {
